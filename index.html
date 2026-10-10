@@ -37,35 +37,41 @@
 	let innerScale = 5.0;
 	let steps = 14;
 
-	for (let i = 0; i < N; i++) {
-	    let angle = 2 * Math.PI * i / N;
-	    let x0 = heartX(angle) * outerScale;
-	    let y0 = heartY(angle) * outerScale;
-	    let x1 = heartX(angle) * innerScale;
-	    let y1 = heartY(angle) * innerScale;
-	
-	    for (let j = 0; j < steps; j++) {
-		let f1 = j / steps;
-		let f2 = (j + 1) / steps;
-		let xStart = x0 + (x1 - x0) * f1;
-		let yStart = y0 + (y1 - y0) * f1;
-		let xEnd = x0 + (x1 - x0) * f2;
-		let yEnd = y0 + (y1 - y0) * f2;
+	let i = 0;
+	let lastTime = 0;
 
-		ctx.strokeStyle = `rgb(255, ${178 - f1*178}, ${199 - f1*199})`;
-		ctx.lineWidth = 2.2 - (1.7 * f1);
-		ctx.beginPath();
-		ctx.moveTo(xStart, yStart);
-		ctx.lineTo(xEnd, yEnd);
-		ctx.stroke();
-	   }
-	   
-	   i++;
-	   setTimeout(drawNextLine, 30); // Speed of drawing
+	function animate(currentTime) { 
+	    if (i < N) {
+		if (currentTime - lastTime > 20) {
+	   	    let angle = 2 * Math.PI * i / N;
+	   	    let x0 = heartX(angle) * outerScale;
+	  	    let y0 = heartY(angle) * outerScale;
+	    	    let x1 = heartX(angle) * innerScale;
+	    	    let y1 = heartY(angle) * innerScale;
+	
+	    	    for (let j = 0; j < steps; j++) {
+			let f1 = j / steps;
+			let f2 = (j + 1) / steps;
+			let xStart = x0 + (x1 - x0) * f1;
+			let yStart = y0 + (y1 - y0) * f1;
+			let xEnd = x0 + (x1 - x0) * f2;
+			let yEnd = y0 + (y1 - y0) * f2;
+
+			ctx.strokeStyle = `rgb(255, ${178 - f1*178}, ${199 - f1*199})`;
+			ctx.lineWidth = 2.2 - (1.7 * f1);
+			ctx.beginPath();
+			ctx.moveTo(xStart, yStart);
+			ctx.lineTo(xEnd, yEnd);
+			ctx.stroke();
+	   	    }
+	   	    i++;
+		    lastTime = currentTime;
+		}
+		requestAnimationFrame(animate);
+	    }
 	}
 
-	// Start animation
-	drawNextLine();
+	requestAnimationFrame(animate);
     </script>
 </body>
 </html>
