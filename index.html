@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Glowing Heart</title>
+    <style>
+	body {
+	    margin: 0;
+	    background-color: black;
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    height: 100vh;
+	    overflow: hidden;
+	}
+	canvas {
+	    background-color: black;
+	}
+    </style>
+</head>
+<body>
+    <canvas id="heartCanvas" width="700" height="700"></canvas>
+    <script>
+	const canvas = document.getElementById('heartCanvas');
+	const ctx = canvas.getContext('2d');
+	ctx.translate(350, 350);
+
+	function heartX(t) {
+	     return 16 * Math.pow(Math.sin(t), 3);
+	}
+	function heartY(t) {
+	     return -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+	}
+
+	let N = 140;
+	let outerScale = 18.0;
+	let innerScale = 5.0;
+	let steps = 14;
+
+	for (let i = 0; i < N; i++) {
+	    let angle = 2 * Math.PI * i / N;
+	    let x0 = heartX(angle) * outerScale;
+	    let y0 = heartY(angle) * outerScale;
+	    let x1 = heartX(angle) * innerScale;
+	    let y1 = heartY(angle) * innerScale;
+	
+	    for (let j = 0; j < steps; j++) {
+		let f1 = j / steps;
+		let f2 = (j + 1) / steps;
+		let xStart = x0 + (x1 - x0) * f1;
+		let yStart = y0 + (y1 - y0) * f1;
+		let xEnd = x0 + (x1 - x0) * f2;
+		let yEnd = y0 + (y1 - y0) * f2;
+
+		ctx.strokeStyle = `rgb(255, ${178 - f1*178}, ${199 - f1*199})`;
+		ctx.lineWidth = 2.2 - (1.7 * f1);
+		ctx.beginPath();
+		ctx.moveTo(xStart, yStart);
+		ctx.lineTo(xEnd, yEnd);
+		ctx.stroke();
+	   }
+	}
+    </script>
+</body>
+</html>
