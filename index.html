@@ -59,7 +59,13 @@
 		ctx.lineTo(xEnd, yEnd);
 		ctx.stroke();
 	   }
+	   
+	   i++;
+	   setTimeout(drawNextLine, 30); // Speed of drawing
 	}
+
+	// Start animation
+	drawNextLine();
     </script>
 </body>
 </html>
